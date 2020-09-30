@@ -1,0 +1,29 @@
+{
+  "name": "gipfl/icinga-api",
+  "description": "Async Icinga 2 API Client library",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thomas Gelf",
+      "email": "thomas@gelf.net"
+      }
+  ],
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "gipfl\\IcingaApi\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=5.6.0",
+    "ext-json": "*",
+    "clue/json-stream": "^0.1.0",
+    "gipfl/log": "^0.1",
+    "gipfl/react-utils": "^0.1.0",
+    "react/http": "^1.1",
+    "react/socket": "^1.6"
+  }
+}
