@@ -100,7 +100,9 @@ class IcingaStreamingClient implements EventEmitterInterface
     public function run()
     {
         $this->logger->info("Connecting to " . $this->getUrl());
-        $this->keepConnecting();
+        $this->loop->futureTick(function () {
+            $this->keepConnecting();
+        });
     }
 
     public function close()
