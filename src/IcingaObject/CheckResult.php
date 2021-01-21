@@ -159,19 +159,19 @@ class CheckResult implements JsonSerializable
         if ($this->scheduleEnd === null) {
             if ($this->scheduleStart === null) {
                 return null;
-            } else {
-                return microtime(true);
             }
-        } elseif ($this->scheduleStart === null) {
-            return null;
-        } else {
-            $executionTime = $this->getExecutionTime();
-            if ($executionTime === null) {
-                return max(0, $this->scheduleEnd - $this->scheduleStart);
-            } else {
-                return max(0, $this->scheduleEnd - $this->scheduleStart - $executionTime);
-            }
+
+            return microtime(true);
         }
+        if ($this->scheduleStart === null) {
+            return null;
+        }
+        $executionTime = $this->getExecutionTime();
+        if ($executionTime === null) {
+            return max(0, $this->scheduleEnd - $this->scheduleStart);
+        }
+
+        return max(0, $this->scheduleEnd - $this->scheduleStart - $executionTime);
     }
 
     public function getExecutionTime()
@@ -188,17 +188,18 @@ class CheckResult implements JsonSerializable
         if ($this->executionEnd === null) {
             if ($this->executionStart === null) {
                 return null;
-            } else {
-                return microtime(true);
             }
-        } elseif ($this->executionStart === null) {
+
+            return microtime(true);
+        }
+        if ($this->executionStart === null) {
             // throw new \RuntimeException(
             //     'Execution has been ended - but never started'
             // );
             return null;
-        } else {
-            return max(0, $this->executionEnd - $this->executionStart);
         }
+
+        return max(0, $this->executionEnd - $this->executionStart);
     }
 
     /**
@@ -280,9 +281,9 @@ class CheckResult implements JsonSerializable
     {
         if ($this->dataPoints === null) {
             return new DataPoints();
-        } else {
-            return $this->dataPoints;
         }
+
+        return $this->dataPoints;
     }
 
     public function jsonSerialize()
