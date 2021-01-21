@@ -286,6 +286,14 @@ class CheckResult implements JsonSerializable
         return $this->dataPoints;
     }
 
+    /**
+     * @return array|string
+     */
+    public function getCommand()
+    {
+        return $this->command;
+    }
+
     public function jsonSerialize()
     {
         $object = (object) [
