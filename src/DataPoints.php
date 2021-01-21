@@ -7,6 +7,7 @@ use JsonSerializable;
 
 class DataPoints extends ArrayIterator implements JsonSerializable
 {
+    /** @var DataPoint[] */
     protected $points = [];
 
     /**

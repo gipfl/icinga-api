@@ -23,6 +23,12 @@ class DataPoint implements JsonSerializable
     /** @var Threshold */
     protected $critical;
 
+    /** @var int|float */
+    protected $min;
+
+    /** @var int|float */
+    protected $max;
+
     public function __construct($label, $value, $unit = null)
     {
         $this->label = $label;
@@ -101,6 +107,30 @@ class DataPoint implements JsonSerializable
         return $this->unit;
     }
 
+    /**
+     * @param int|float|string|null $value
+     */
+    public function setMin($value)
+    {
+        if ($value === null) {
+            $this->min = $value;
+        } else {
+            $this->min = static::wantNumber($value);
+        }
+    }
+
+    /**
+     * @param int|float|string|null $value
+     */
+    public function setMax($value)
+    {
+        if ($value === null) {
+            $this->max = $value;
+        } else {
+            $this->max = static::wantNumber($value);
+        }
+    }
+
     public function jsonSerialize()
     {
         return (object) [
@@ -109,6 +139,8 @@ class DataPoint implements JsonSerializable
             'unit'  => $this->unit,
             'warning'  => $this->warning,
             'critical' => $this->critical,
+            'min'      => $this->min,
+            'max'      => $this->max,
         ];
     }
 
