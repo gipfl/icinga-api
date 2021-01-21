@@ -3,9 +3,17 @@
 namespace gipfl\IcingaApi\ReactGlue;
 
 use InvalidArgumentException;
+use OpenSSLCertificate;
+use function get_class;
+use function gettype;
+use function is_array;
+use function openssl_x509_free;
+use function sprintf;
 
 class TlsPeer
 {
+    const PHP8_VERSION = 80000;
+
     /** @var resource of type OpenSSL X.509 */
     private $peerCertificate;
 
@@ -44,17 +52,32 @@ class TlsPeer
 
     protected static function assertX509Resource($resource)
     {
-        if (! \is_resource($resource)) {
-            throw new InvalidArgumentException(\sprintf(
-                'Resource expected, got "%s"',
-                \gettype($resource)
-            ));
-        }
-        if (\get_resource_type($resource) !== 'OpenSSL X.509') {
-            throw new InvalidArgumentException(\sprintf(
-                'Resource of type "OpenSSL X.509" expected, got "%s"',
-                \get_resource_type($resource)
-            ));
+        if (PHP_VERSION_ID < 80000) {
+            if (! \is_resource($resource)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Resource expected, got "%s"',
+                    gettype($resource)
+                ));
+            }
+            if (\get_resource_type($resource) !== 'OpenSSL X.509') {
+                throw new InvalidArgumentException(sprintf(
+                    'Resource of type "OpenSSL X.509" expected, got "%s"',
+                    \get_resource_type($resource)
+                ));
+            }
+        } else {
+            if (! is_object($resource)) {
+                throw new InvalidArgumentException(sprintf(
+                    'OpenSSLCertificate Object expected, got "%s"',
+                    gettype($resource)
+                ));
+            }
+            if (! $resource instanceof OpenSSLCertificate) {
+                throw new InvalidArgumentException(sprintf(
+                    'Object of type "OpenSSLCertificate" expected, got "%s"',
+                    get_class($resource)
+                ));
+            }
         }
     }
 
@@ -93,12 +116,16 @@ class TlsPeer
     protected function free()
     {
         if ($this->peerCertificate) {
-            \openssl_x509_free($this->peerCertificate);
+            if (PHP_VERSION_ID < 80000) {
+                openssl_x509_free($this->peerCertificate);
+            }
             $this->peerCertificate = null;
         }
-        if (\is_array($this->peerCertificateChain)) {
-            foreach ($this->peerCertificateChain as $cert) {
-                \openssl_x509_free($cert);
+        if (is_array($this->peerCertificateChain)) {
+            if (PHP_VERSION_ID < self::PHP8_VERSION) {
+                foreach ($this->peerCertificateChain as $cert) {
+                    openssl_x509_free($cert);
+                }
             }
             $this->peerCertificateChain = null;
         }
