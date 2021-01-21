@@ -2,7 +2,10 @@
 
 namespace gipfl\IcingaApi;
 
+use InvalidArgumentException;
 use JsonSerializable;
+use function is_numeric;
+use function preg_match;
 
 class DataPoint implements JsonSerializable
 {
@@ -107,5 +110,28 @@ class DataPoint implements JsonSerializable
             'warning'  => $this->warning,
             'critical' => $this->critical,
         ];
+    }
+
+    public static function wantNumber($any)
+    {
+        if (is_int($any) || is_float($any)) {
+            return $any;
+        }
+
+        return static::parseNumber($any);
+    }
+
+    public static function parseNumber($string)
+    {
+        if (! is_numeric($string)) {
+            throw new InvalidArgumentException(
+                "Numeric value expected, got $string"
+            );
+        }
+        if (preg_match('/^-?\d+$/', $string)) {
+            return (int) $string;
+        }
+
+        return (float) $string;
     }
 }

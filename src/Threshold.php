@@ -26,9 +26,9 @@ class Threshold implements JsonSerializable
     {
         if ($this->outsideIsValid) {
             return $this->range->contains($value);
-        } else {
-            return $this->range->contains($value);
         }
+
+        return $this->range->contains($value);
     }
 
     public function jsonSerialize()

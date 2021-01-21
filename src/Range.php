@@ -25,15 +25,11 @@ class Range implements JsonSerializable
         $startIsInclusive = true,
         $endIsInclusive = true
     ) {
-        if ($start !== null && ! \is_numeric($start)) {
-            throw new InvalidArgumentException(
-                "Start of range must be numeric, got $start"
-            );
+        if ($start !== null) {
+            $start = DataPoint::wantNumber($start);
         }
-        if ($end !== null && ! \is_numeric($end)) {
-            throw new InvalidArgumentException(
-                "End of range must be numeric, got $end"
-            );
+        if ($end !== null) {
+            $end = DataPoint::wantNumber($end);
         }
         if ($start !== null && $end !== null && $start > $end) {
             throw new InvalidArgumentException(
@@ -53,10 +49,8 @@ class Range implements JsonSerializable
                 if ($value > $this->end) {
                     return false;
                 }
-            } else {
-                if ($value >= $this->end) {
-                    return false;
-                }
+            } elseif ($value >= $this->end) {
+                return false;
             }
         }
         if ($this->start !== null) {
@@ -64,10 +58,8 @@ class Range implements JsonSerializable
                 if ($value < $this->start) {
                     return false;
                 }
-            } else {
-                if ($value <= $this->start) {
-                    return false;
-                }
+            } elseif ($value <= $this->start) {
+                return false;
             }
         }
 
