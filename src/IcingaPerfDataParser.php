@@ -80,7 +80,7 @@ class IcingaPerfDataParser
             $point->setWarningThreshold(static::parseThreshold($parts[1]));
         }
         if (isset($parts[2]) && strlen($parts[2]) > 0) {
-            $point->setCriticalThreshold(static::parseThreshold($parts[1]));
+            $point->setCriticalThreshold(static::parseThreshold($parts[2]));
         }
         if (isset($parts[3]) && strlen($parts[3]) > 0) {
             $point->setMin(DataPoint::wantNumber($parts[3]));
