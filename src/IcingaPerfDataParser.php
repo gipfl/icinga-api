@@ -121,8 +121,12 @@ class IcingaPerfDataParser
 
     protected static function splitValueUnitString($string)
     {
-        if (preg_match('/^(-?\d+(?:\.\d+)?)([a-zA-Z%°]{1,2})?$/u', $string, $v)) {
+        if (preg_match('/^(-?\d+(?:\.\d+)?(?:[eE]\+?\d{1,3})?)([a-zA-Z%°]+)?$/u', $string, $v)) {
             if (isset($v[2])) {
+                if ($v[2] === 'c') {
+                    return [$v[1] . $v[2], null];
+                }
+
                 return [$v[1], $v[2]];
             }
 
