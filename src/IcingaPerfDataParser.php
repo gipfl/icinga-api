@@ -94,8 +94,12 @@ class IcingaPerfDataParser
 
     public static function parseThreshold($string)
     {
+        if (is_float($string)) {
+            // null or 0 ohne min?
+            return new Threshold(new Range(null, $string), false);
+        }
         if ($string[0] === '@') {
-            $outsideIsValid = false;
+            $outsideIsValid = false; // Wording? Ist inside/outside vertauscht?
             $string = substr($string, 1);
         } else {
             $outsideIsValid = true;
