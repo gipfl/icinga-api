@@ -102,6 +102,7 @@ class CheckResultApiEvent implements JsonSerializable
         return $this->checkResult;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $object = (object) [

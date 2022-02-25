@@ -44,6 +44,7 @@ class CheckResultEvent implements JsonSerializable
         );
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $object = (object) [

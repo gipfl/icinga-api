@@ -33,6 +33,7 @@ class CheckResultVars implements JsonSerializable
         return $self;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

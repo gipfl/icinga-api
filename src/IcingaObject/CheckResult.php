@@ -294,6 +294,7 @@ class CheckResult implements JsonSerializable
         return $this->command;
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $object = (object) [

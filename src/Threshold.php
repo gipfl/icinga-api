@@ -31,6 +31,7 @@ class Threshold implements JsonSerializable
         return $this->range->contains($value);
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return (object) [

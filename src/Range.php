@@ -71,6 +71,7 @@ class Range implements JsonSerializable
         // TODO.
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return (object) [
