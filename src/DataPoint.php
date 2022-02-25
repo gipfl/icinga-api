@@ -9,6 +9,12 @@ use function preg_match;
 
 class DataPoint implements JsonSerializable
 {
+    const DATATYPE_COUNTER = 'COUNTER';
+
+    const DATA_TYPES = [
+        self::DATATYPE_COUNTER,
+    ];
+
     /** @var string */
     protected $label;
 
@@ -28,6 +34,9 @@ class DataPoint implements JsonSerializable
 
     /** @var int|float */
     protected $max;
+
+    /** @var string any of DATA_TYPES */
+    protected $type;
 
     public function __construct($label, $value, $unit = null)
     {
@@ -131,11 +140,17 @@ class DataPoint implements JsonSerializable
         }
     }
 
+    public function setCounter()
+    {
+        $this->type = self::DATATYPE_COUNTER;
+    }
+
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return (object) [
             'label' => $this->label,
+            'type'  => $this->type,
             'value' => $this->value,
             'unit'  => $this->unit,
             'warning'  => $this->warning,
