@@ -94,7 +94,7 @@ class IcingaPerfDataParser
 
     public static function parseThreshold($string)
     {
-        if (is_float($string)) {
+        if (is_float($string) || is_int($string)) {
             // null or 0 ohne min?
             return new Threshold(new Range(null, $string), false);
         }
